@@ -1,4 +1,4 @@
-let colors = ['green','blue','red','']
+// let colors = ['green','blue','red','']
 
 const generateNxN = (n)=> {
   //your code here
@@ -6,7 +6,8 @@ const generateNxN = (n)=> {
   for (let i = 0; i < n; i++) {
     let arr = []
     for (let j = 0; j < n; j++) {
-      arr.push(colors[Math.floor(Math.random() * colors.length)])
+      // arr.push(colors[Math.floor(Math.random() * colors.length)])
+      arr.push('')
     }
     grid.push(arr)
   }
@@ -14,13 +15,6 @@ const generateNxN = (n)=> {
 };
 
 const arr = generateNxN(5);
-  /* sample output
-  [
-    ['red', 'blue'],//row 1
-    ['green', '']//row 2
-  ];
-  */
-
 
 const generateHTMLGrid = (arr)=> {
 //your code here to generate html for a grid
@@ -33,7 +27,7 @@ const generateHTMLGrid = (arr)=> {
       createCol.style.backgroundColor = elem[i]
       createRow.appendChild(createCol)
     }
-    document.body.appendChild(createRow)
+    document.querySelector('#grid').appendChild(createRow)
   })
 };
 generateHTMLGrid(arr);
