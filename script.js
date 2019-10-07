@@ -24,7 +24,8 @@ const generateHTMLGrid = (arr)=> {
 
     for (let i = 0; i < elem.length; i++) {
       const createCol = document.createElement('div')
-      createCol.style.backgroundColor = elem[i]
+      // createCol.style.backgroundColor = elem[i]
+      createCol.classList.add('column')
       createRow.appendChild(createCol)
     }
     document.querySelector('#grid').appendChild(createRow)

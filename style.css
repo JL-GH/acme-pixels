@@ -29,3 +29,8 @@ button {
   height: 20px;
   border: solid .5px black
 }
+
+.colors {
+  width: 5px;
+  height: 5px;
+}
