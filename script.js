@@ -3,6 +3,9 @@ const addRow = document.querySelector('#addRow');
 const removeRow = document.querySelector('#removeRow');
 const addCol = document.querySelector('#addCol');
 const removeCol = document.querySelector('#removeCol');
+const grid = document.querySelector('#grid');
+let selectedSwatch = document.querySelector('.colors')
+selectedSwatch.classList.toggle('selected')
 
 const colorBlocks = document.querySelectorAll('.colors');
 let selectedColor = '';
@@ -31,15 +34,43 @@ addCol.addEventListener('click', ev => {
   columns++;
 })
 
+removeRow.addEventListener('click', ev => {
+  const grabRow = document.querySelectorAll('.row')
+  let rowArr = [...grabRow]
+  const lastRow = rowArr[rowArr.length - 1]
+
+  if(rows === 1) {
+    return
+  }
+
+  grid.removeChild(lastRow)
+  rows--
+})
+
+removeCol.addEventListener('click', ev => {
+  const grabRow = document.querySelectorAll('.row')
+
+  if (columns === 1) {
+    return
+  }
+
+  grabRow.forEach(r => {
+    r.removeChild(r.lastChild)
+  })
+  columns--
+})
+
 colorBlocks.forEach(block => {
   block.addEventListener('click', (ev) => {
     selectedColor = ev.target.style.backgroundColor;
+    ev.target.classList.toggle('selected')
     console.log(selectedColor);
+    selectedSwatch.classList.toggle('selected')
+    selectedSwatch = ev.target
   })
 })
 
 const generateNxN = (n)=> {
-  //your code here
   let grid = []
   for (let i = 0; i < n; i++) {
     let arr = []
