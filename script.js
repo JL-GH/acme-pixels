@@ -4,15 +4,15 @@ const removeRow = document.querySelector('#removeRow');
 const addCol = document.querySelector('#addCol');
 const removeCol = document.querySelector('#removeCol');
 const grid = document.querySelector('#grid');
-let selectedSwatch = document.querySelector('.colors')
-selectedSwatch.classList.toggle('selected')
+let selectedSwatch = document.querySelector('.colors');
+selectedSwatch.classList.toggle('selected');
 
 const colorBlocks = document.querySelectorAll('.colors');
-let selectedColor = '';
+let selectedColor = 'red';
 let columns = 5;
 let rows = 5;
 
-addRow.addEventListener('click', ev => {
+addRow.addEventListener('click', () => {
   const newRow = document.createElement('div');
   newRow.classList.add('row');
   for (let i = 0; i < columns; i++) {
@@ -22,9 +22,10 @@ addRow.addEventListener('click', ev => {
   }
   document.querySelector('#grid').appendChild(newRow);
   rows++;
+  initFuncs()
 })
 
-addCol.addEventListener('click', ev => {
+addCol.addEventListener('click', () => {
   const rowsList = document.querySelectorAll('.row');
   rowsList.forEach(r => {
     let cell = document.createElement('div');
@@ -32,9 +33,10 @@ addCol.addEventListener('click', ev => {
     r.appendChild(cell);
   })
   columns++;
+  initFuncs()
 })
 
-removeRow.addEventListener('click', ev => {
+removeRow.addEventListener('click', () => {
   const grabRow = document.querySelectorAll('.row')
   let rowArr = [...grabRow]
   const lastRow = rowArr[rowArr.length - 1]
@@ -44,10 +46,12 @@ removeRow.addEventListener('click', ev => {
   }
 
   grid.removeChild(lastRow)
+
   rows--
+  initFuncs()
 })
 
-removeCol.addEventListener('click', ev => {
+removeCol.addEventListener('click', () => {
   const grabRow = document.querySelectorAll('.row')
 
   if (columns === 1) {
@@ -57,7 +61,9 @@ removeCol.addEventListener('click', ev => {
   grabRow.forEach(r => {
     r.removeChild(r.lastChild)
   })
+
   columns--
+  initFuncs()
 })
 
 colorBlocks.forEach(block => {
@@ -75,7 +81,6 @@ const generateNxN = (n)=> {
   for (let i = 0; i < n; i++) {
     let arr = []
     for (let j = 0; j < n; j++) {
-      // arr.push(colors[Math.floor(Math.random() * colors.length)])
       arr.push('')
     }
     grid.push(arr)
@@ -83,7 +88,7 @@ const generateNxN = (n)=> {
   return grid
 };
 
-const arr = generateNxN(5);
+const arrs = generateNxN(5);
 
 const generateHTMLGrid = (arr)=> {
 //your code here to generate html for a grid
@@ -99,11 +104,38 @@ const generateHTMLGrid = (arr)=> {
     document.querySelector('#grid').appendChild(createRow)
   })
 };
-generateHTMLGrid(arr);
+generateHTMLGrid(arrs);
 
-const gridColumns = document.querySelectorAll('.column');
-gridColumns.forEach(cell => {
-  cell.addEventListener('click', (ev) => {
+//add events to gird
+const initFuncs = () => {
+  const gridColumns = document.querySelectorAll('.column');
+  const colorMeEvent = (ev) => {
     ev.target.style.backgroundColor = selectedColor;
+  }
+  const colorDrag = (ev) => {
+    ev.target.style.backgroundColor = selectedColor;
+    grid.addEventListener('mouseover', colorMeEvent)
+  }
+  const mouseUp = () => {
+    grid.removeEventListener('mouseover', colorMeEvent)
+  }
+
+  //addevent mouseleave grid in order to stop the color drag bug when exiting grid
+  grid.addEventListener('mouseleave', () => {
+    grid.removeEventListener('mouseover', colorMeEvent)
   })
-})
+  //add mousedown and mouse up triggers to all the cells
+  gridColumns.forEach((elem) => {
+    elem.addEventListener('mousedown', colorDrag)
+    elem.addEventListener('mouseup', mouseUp)
+  })
+
+  //original click event
+  // gridColumns.forEach(cell => {
+  //   cell.addEventListener('click', (ev) => {
+  //     ev.target.style.backgroundColor = selectedColor;
+  //   })
+  // })
+}
+
+initFuncs()
